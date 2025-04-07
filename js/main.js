@@ -23,13 +23,8 @@ function onSubmit(event) {
 }
 
 function validatePassword() {
-	let length = document.querySelector(".requirements.req-length");
-	let number = document.querySelector(".requirements.req-number");
-	let caps = document.querySelector(".requirements.req-caps");
-	let nocaps = document.querySelector(".requirements.req-nocaps");
-	let special = document.querySelector(".requirements.req-special");
-
-	function toggleCheck(elem, bool) {
+	function toggleCheck(elemClass, bool) {
+		let elem = document.querySelector(".requirement-" + elemClass);
 		elem.querySelector(bool ? "i.text-danger" : "i.text-success").classList.add("d-none");
 		elem.querySelector(bool ? "i.text-success" : "i.text-danger").classList.remove("d-none");
 		return bool;
@@ -37,11 +32,11 @@ function validatePassword() {
 
 	let password = form.password.value;
 
-	let valid = toggleCheck(length, password.length >= 8);
-	valid &= toggleCheck(number, /[0-9]/.test(password));
-	valid &= toggleCheck(caps, /[A-Z]/.test(password));
-	valid &= toggleCheck(nocaps, /[a-z]/.test(password));
-	valid &= toggleCheck(special, /[^\w\s]/.test(password));
+	let valid = toggleCheck("length", password.length >= 8);
+	valid &= toggleCheck("number", /[0-9]/.test(password));
+	valid &= toggleCheck("caps", /[A-Z]/.test(password));
+	valid &= toggleCheck("nocaps", /[a-z]/.test(password));
+	valid &= toggleCheck("special", /[^\w\s]/.test(password));
 
 	let alert = document.querySelector(".form-pass .alert");
 	form.password.setCustomValidity(valid ? "" : "Contraseña no válida");
