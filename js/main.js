@@ -21,35 +21,38 @@ function onSubmit(event) {
 }
 
 function validatePassword() {
-    let invalid = false;
-    let length = document.querySelector(".requirements.req-length");
-    let number = document.querySelector(".requirements.req-number");
-    let caps = document.querySelector(".requirements.req-caps");
-    let nocaps = document.querySelector(".requirements.req-nocaps");
-    let special = document.querySelector(".requirements.req-special");
-    function toggleTick(elem, bool) {
-        elem.querySelector(bool ? "i.text-danger":"i.text-success").classList.add("d-none");
-        elem.querySelector(bool ? "i.text-success":"i.text-danger").classList.remove("d-none");
-        invalid |= !bool;
-    }
-    toggleTick(length,/.{8,}/.test(form.password.value));
-    toggleTick(number,/[0-9]/.test(form.password.value));
-    toggleTick(caps,/[A-Z]/.test(form.password.value));
-    toggleTick(nocaps,/[a-z]/.test(form.password.value));
-    toggleTick(special,/[^\w\s]/.test(form.password.value));
+	let length = document.querySelector(".requirements.req-length");
+	let number = document.querySelector(".requirements.req-number");
+	let caps = document.querySelector(".requirements.req-caps");
+	let nocaps = document.querySelector(".requirements.req-nocaps");
+	let special = document.querySelector(".requirements.req-special");
 
-    let alert = document.querySelector(".form-pass .alert");
-    form.password.setCustomValidity(invalid ? "error":"")
-    if(invalid) {
-        alert.classList.add("show");
-        setTimeout(() => {
-            alert.classList.remove("show");
-        },ALERTFADEOUT);
-        return false;
-    }
+	function toggleCheck(elem, bool) {
+		elem.querySelector(bool ? "i.text-danger" : "i.text-success").classList.add("d-none");
+		elem.querySelector(bool ? "i.text-success" : "i.text-danger").classList.remove("d-none");
+		return bool;
+	}
 
-    alert.classList.remove("show");
-    return true;
+	let password = form.password.value;
+
+	let valid = toggleCheck(length, password.length >= 8);
+	valid &= toggleCheck(number, /[0-9]/.test(password));
+	valid &= toggleCheck(caps, /[A-Z]/.test(password));
+	valid &= toggleCheck(nocaps, /[a-z]/.test(password));
+	valid &= toggleCheck(special, /[^\w\s]/.test(password));
+
+	let alert = document.querySelector(".form-pass .alert");
+	form.password.setCustomValidity(valid ? "" : "Contraseña no válida");
+	if (valid) {
+		alert.classList.remove("show");
+		return true;
+	}
+
+	alert.classList.add("show");
+	setTimeout(() => {
+		alert.classList.remove("show");
+	}, ALERTFADEOUT);
+	return false;
 }
 
 function validatePassEqual() {
