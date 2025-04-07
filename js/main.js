@@ -1,11 +1,13 @@
 const form = document.getElementById("createUserForm");
-form?.addEventListener("submit",onSubmit);
+if (form !== null) {
+	form.addEventListener("submit", onSubmit);
 
-form?.name.addEventListener("input",validateName);
-form?.email.addEventListener("input",validateEmail);
-form?.password.addEventListener("input",validatePassword);
-form?.password.addEventListener("input",validatePassEqual);
-form?.password2.addEventListener("input",validatePassEqual);
+	form.name.addEventListener("input", validateName);
+	form.email.addEventListener("input", validateEmail);
+	form.password.addEventListener("input", validatePassword);
+	form.password.addEventListener("input", validatePassEqual);
+	form.password2.addEventListener("input", validatePassEqual);
+}
 
 const ALERTFADEOUT = 3000;
 
@@ -92,12 +94,35 @@ function validateForm() {
 }
 
 function saveUser() {
-    const userData = {
-        name: form.name.value,
-        email: form.email.value
-    }
-    let json = JSON.stringify(userData);
-    let storeddata = localStorage.userdata;
-    console.log(storeddata,json)
-    localStorage.setItem("userdata", storeddata === undefined ? json:storeddata+","+json)
+	const userData = {
+		name: form.name.value,
+		email: form.email.value,
+	};
+	let json = JSON.stringify(userData);
+	let storeddata = localStorage.userdata;
+	console.log(storeddata, json);
+	localStorage.setItem("userdata", storeddata === undefined ? json : storeddata + "," + json);
+}
+
+function printUsers() {
+	if (localStorage.userdata === undefined) return;
+	const userData = JSON.parse("[" + localStorage.userdata + "]");
+
+	const cardContainer = document.getElementById("cardContainer");
+	for (let i = 0; i < userData.length; i++)
+		cardContainer.innerHTML += `
+          <div class="card border-primary mb-3" style="max-width: 18rem;">
+            <div class="card-header">Usuario #${i + 1}</div>
+            <div class="card-body text-primary">
+              <h5 class="card-title">${userData[i].name}</h5>
+              <p class="card-text"><a class="text-decoration-none" href="mailto:${userData[i].email}">${
+			userData[i].email
+		}</a></p>
+            </div>
+          </div>
+        `;
+}
+
+if (document.getElementById("cardContainer")) {
+	printUsers();
 }
