@@ -12,14 +12,17 @@ if (form !== null) {
 const ALERTFADEOUT = 3000;
 
 function onSubmit(event) {
-    event.preventDefault();
-    
-    if(!validateForm()) return;
-    saveUser();
-    form.reset();
-    let alertSuccess = document.querySelector(".alert.alert-success");
-    alertSuccess.classList.add("show");
-    setTimeout(() => alertSuccess.classList.remove("show"), ALERTFADEOUT);
+	event.preventDefault();
+
+	if (!validateForm()) return;
+	saveUser();
+	form.reset();
+	let alertSuccess = document.querySelector(".alert.alert-success");
+	alertSuccess.classList.add("show");
+	setTimeout(() => {
+		alertSuccess.classList.remove("show");
+		window.location.href = "users.html";
+	}, ALERTFADEOUT);
 }
 
 function validatePassword() {
@@ -39,6 +42,7 @@ function validatePassword() {
 	valid &= toggleCheck("special", /[^\w\s]/.test(password));
 
 	let alert = document.querySelector(".form-pass .alert");
+	document.querySelector(`.form-pass`).classList.add("was-validated");
 	form.password.setCustomValidity(valid ? "" : "Contraseña no válida");
 	if (valid) {
 		alert.classList.remove("show");
@@ -53,39 +57,43 @@ function validatePassword() {
 }
 
 function validatePassEqual() {
-    return validateField("form-pass2",form.password.value === form.password2.value,"Las contaseñas no coinciden");
+	return validateField("form-pass2", form.password.value === form.password2.value, "Las contraseñas no coinciden");
 }
 
 function validateName() {
-    return validateField("form-name",form.name.value!=="","Introduce un nombre")
-        && validateField("form-name",/^[^0-9]+$/.test(form.name.value),"Introduce un nombre valido");
+	return (
+		validateField("form-name", form.name.value !== "", "Introduce un nombre") &&
+		validateField("form-name", /^[\w\s]+$/.test(form.name.value), "Introduce un nombre válido")
+	);
 }
 
 function validateEmail() {
-    let re = /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/;
-    return validateField("form-email",re.test(form.email.value),"Introduce un email válido");
+	let re =
+		/^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/;
+	return validateField("form-email", re.test(form.email.value), "Introduce un email válido");
 }
 
 function validateField(fieldClass, validation, errorText) {
-    let alert = document.querySelector(`.${fieldClass} .alert`);
-    document.querySelector(`.${fieldClass} input`).setCustomValidity(validation ? "":errorText);
-    if(!validation) {
-        // alert.classList.remove("d-none");
-        alert.classList.add("show");
-        alert.textContent = errorText;
-        setTimeout(() => {
-            alert.classList.remove("show"); 
-            // alert.classList.add("d-none")
-        }, ALERTFADEOUT);
-        return false;
-    }
-    alert.classList.remove("show");
-    // alert.classList.add("d-none");
-    return true;
+	let alert = document.querySelector(`.${fieldClass} .alert`);
+	document.querySelector(`.${fieldClass} input`).setCustomValidity(validation ? "" : errorText);
+	document.querySelector(`.${fieldClass}`).classList.add("was-validated");
+	if (!validation) {
+		// alert.classList.remove("d-none");
+		alert.classList.add("show");
+		alert.textContent = errorText;
+		setTimeout(() => {
+			alert.classList.remove("show");
+			// alert.classList.add("d-none")
+		}, ALERTFADEOUT);
+		return false;
+	}
+	alert.classList.remove("show");
+	// alert.classList.add("d-none");
+	return true;
 }
 
 function validateForm() {
-    return validateEmail() & validateName() & validatePassword() & validatePassEqual();
+	return validateEmail() & validateName() & validatePassword() & validatePassEqual();
 }
 
 function saveUser() {
