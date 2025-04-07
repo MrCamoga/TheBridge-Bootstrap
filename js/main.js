@@ -14,6 +14,10 @@ function onSubmit(event) {
     
     if(!validateForm()) return;
     saveUser();
+    form.reset();
+    let alertSuccess = document.querySelector(".alert.alert-success");
+    alertSuccess.classList.add("show");
+    setTimeout(() => alertSuccess.classList.remove("show"), ALERTFADEOUT);
 }
 
 function validatePassword() {
