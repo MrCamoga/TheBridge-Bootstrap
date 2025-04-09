@@ -32,22 +32,24 @@
               </nav>
         </header>
         <main class="m-3">
+            <h1>Crear usuario</h1>
+            
             <form id="createUserForm" style="max-width: 30%;">
               <div class="align-items-center">
                 <div class="mb-3 form-name">
                     <label for="name" class="form-label">Nombre</label>
                     <input type="text" class="form-control" id="name" name="name" pattern="^[^0-9]+$">
-                    <div class="alert alert-danger fade mt-3" role="alert"></div>
+                    <div class="alert alert-danger fade mt-3 d-none" role="alert"></div>
                 </div>
                 <div class="mb-3 form-email">
                     <label for="email" class="form-label">Email</label>
                     <input type="email" class="form-control" id="email" name="email">
-                    <div class="alert alert-danger fade mt-3" role="alert"></div>
+                    <div class="alert alert-danger fade mt-3 d-none" role="alert"></div>
                 </div>
                 <div class="mb-3 form-pass">
                     <label for="password" class="form-label">Contraseña</label>
                     <input type="password" class="form-control" id="password" name="password">
-                    <div class="alert alert-danger fade mt-3" role="alert">
+                    <div class="alert alert-danger fade mt-3 d-none" role="alert">
                       <ul class="list-unstyled mb-0">
                         <li class="requirement-length">
                           <i class="text-success me-1">✓</i>
@@ -80,9 +82,9 @@
                 <div class="mb-3 form-pass2">
                     <label for="password2" class="form-label">Confirmar contraseña</label>
                     <input type="password" class="form-control" id="password2" name="password2">
-                    <div class="alert alert-danger fade mt-3" role="alert"></div>
+                    <div class="alert alert-danger fade mt-3 d-none" role="alert"></div>
                 </div>
-                <div class="alert alert-success fade mt-3" role="alert">Usuario creado con éxito</div>
+                <div class="alert alert-success fade mt-3 d-none" role="alert">Usuario creado con éxito</div>
                 <button type="submit" class="btn btn-primary">Crear usuario</button>
               </div>
             </form>

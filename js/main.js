@@ -1,7 +1,7 @@
 const form = document.getElementById("createUserForm");
-if (form !== null) {
-	form.addEventListener("submit", onSubmit);
 
+if (form) {
+	form.addEventListener("submit", onSubmit);
 	form.name.addEventListener("input", validateName);
 	form.email.addEventListener("input", validateEmail);
 	form.password.addEventListener("input", validatePassword);
@@ -46,12 +46,21 @@ function validatePassword() {
 	form.password.setCustomValidity(valid ? "" : "Contraseña no válida");
 	if (valid) {
 		alert.classList.remove("show");
+		setTimeout(() => {
+			alert.classList.add("d-none");
+		}, 150);
 		return true;
 	}
 
-	alert.classList.add("show");
+	alert.classList.remove("d-none");
+	setTimeout(() => {
+		alert.classList.add("show");
+	}, 150);
 	setTimeout(() => {
 		alert.classList.remove("show");
+		setTimeout(() => {
+			alert.classList.add("d-none");
+		}, 150);
 	}, ALERTFADEOUT);
 	return false;
 }
@@ -61,10 +70,7 @@ function validatePassEqual() {
 }
 
 function validateName() {
-	return (
-		validateField("form-name", form.name.value !== "", "Introduce un nombre") &&
-		validateField("form-name", /^[\w\s]+$/.test(form.name.value), "Introduce un nombre válido")
-	);
+	return validateField("form-name", form.name.value !== "", "Introduce un nombre");
 }
 
 function validateEmail() {
@@ -78,22 +84,30 @@ function validateField(fieldClass, validation, errorText) {
 	document.querySelector(`.${fieldClass} input`).setCustomValidity(validation ? "" : errorText);
 	document.querySelector(`.${fieldClass}`).classList.add("was-validated");
 	if (!validation) {
-		// alert.classList.remove("d-none");
-		alert.classList.add("show");
+		alert.classList.remove("d-none");
+		setTimeout(() => {
+			alert.classList.add("show");
+		}, 150);
 		alert.textContent = errorText;
 		setTimeout(() => {
 			alert.classList.remove("show");
-			// alert.classList.add("d-none")
+			setTimeout(() => {
+				alert.classList.add("d-none"); // display none after fade out
+			}, 150);
 		}, ALERTFADEOUT);
 		return false;
 	}
+
 	alert.classList.remove("show");
-	// alert.classList.add("d-none");
+	setTimeout(() => {
+		alert.classList.add("d-none");
+	}, 150);
+
 	return true;
 }
 
 function validateForm() {
-	return validateEmail() & validateName() & validatePassword() & validatePassEqual();
+	return validateName() && validateEmail() && validatePassword() && validatePassEqual();
 }
 
 function saveUser() {
