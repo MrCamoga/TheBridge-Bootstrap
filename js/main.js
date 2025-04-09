@@ -19,8 +19,10 @@ function onSubmit(event) {
 	form.reset();
 	let alertSuccess = document.querySelector(".alert.alert-success");
 	alertSuccess.classList.add("show");
+	alertSuccess.classList.remove("d-none");
 	setTimeout(() => {
 		alertSuccess.classList.remove("show");
+		alertSuccess.classList.add("d-none");
 		window.location.href = "users.html";
 	}, ALERTFADEOUT);
 }
